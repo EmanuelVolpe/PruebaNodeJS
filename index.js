@@ -18,7 +18,7 @@ const user = "manu";
 const pass = "manu";
 const dbname = "inventario";
 const uri = `mongodb+srv://${user}:${pass}@manucluster.c1h7e.mongodb.net/${dbname}?retryWrites=true&w=majority`;
-//const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
 mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true})
   .then(()=> console.log('conectado a mongodb')) 
   .catch((e) => console.log('error de conexión', e))
@@ -31,33 +31,52 @@ app.post('/api/producto', (req, res) => {
         tipo: req.body.tipo,
         marca: req.body.marca
     })
-    producto.save((error, productoGuarado) => {
+    producto.save((error, productoGuardado) => {
         if (error) {
             res.status(500).send({message:'Error al guardar el producto'})
         }
         res.status(200).send({
                             message:'Proudcto guardado con exito',
-                            producto: productoGuarado
+                            producto: productoGuardado
                             })
     })
+    console.log({producto: producto});
 });
 
-
-/*app.get('/api/producto/', (req, res) => {
-    res.status(200).send({ 'Productos': '[application/json]'})
+app.get('/api/producto/', (req, res) => {
+    Producto.find({}, (error, producto)=>{
+        if(error) return res.status(500).send({message:`Error ${error} al realizar la peticion`})
+        res.status(200).send({producto: producto})
+    })
 })
   
 app.get('/api/producto/:idProducto', (req, res) => {
-    res.send(`Pagina del producto: ${req.params.idProducto}`)
+    let idProducto = req.params.idProducto
+    Producto.findById(idProducto, (error, producto) => {
+        if(error) return res.status(500).send({message:`Error al obtnener el producto con el id ${idProducto}`})
+        res.status(200).send({producto: producto})
+    })
 })
 
-app.put('/api/producto/:idProducto', function (req, res) {
-    res.send('Got a PUT request at /user');
+app.put('/api/producto/:idProducto', (req, res) => {
+    let idProducto = req.params.idProducto
+    let update = req.body
+    Producto.findByIdAndUpdate(idProducto, update, (error, productoActualizado) => {
+        if(error) return res.status(500).send({message:`Error al actualizar el producto con el id ${idProducto}`})
+        res.status(200).send({message:`El producto con el id ${idProducto} ha sido actualizado con exito`})
+    }) 
 });
 
-app.delete('/api/producto/:idProducto', function (req, res) {
-    res.send('Got a DELETE request at /user');
-});*/
+app.delete('/api/producto/:idProducto', (req, res) => {
+    let idProducto = req.params.idProducto
+    Producto.findById(idProducto, (error, producto) => {
+        if(error) return res.status(500).send({message:`Error al eliminar el producto con el id ${idProducto}`})
+        producto.remove((error) => {
+            if(error) return res.status(500).send({message:`Error al eliminar el producto con el id ${idProducto}`}) 
+            res.status(200).send({message:`El producto con el id ${idProducto} ha sido eliminado con exito`})
+        }) 
+    })
+});
 
 
 
