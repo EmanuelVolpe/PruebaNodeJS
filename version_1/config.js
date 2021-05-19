@@ -9,5 +9,4 @@ module.exports = {
     uri,
     port: process.env.PORT || 3001,
     db: process.env.MONGO_DB || uri,
-    SECRET_TOKEN: 'miclavedetokens'
 }
