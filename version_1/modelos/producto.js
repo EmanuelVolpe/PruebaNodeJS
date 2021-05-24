@@ -4,9 +4,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ProductoSchema = new Schema({
-    precio: Number,
     tipo:  String,
-    marca: String
+    marca: String,
+    precio: Number
 });
 
 module.exports = mongoose.model('Producto', ProductoSchema);

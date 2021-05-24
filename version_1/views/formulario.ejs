@@ -1,0 +1,26 @@
+<%- include('plantillas/header', {titulo:'e-commerce'}) -%>
+    
+    <div class="container">
+        <h1><%= titulo %></h1>
+    </div>
+
+    <div class="container">
+        <form action="../rutas/router.js" method="POST">
+            <div class="mb-3">
+                <label class="form-label">Tipo de Producto</label>
+                <input type="text" class="form-control" name="tipo">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Marca</label>
+                <input type="text" class="form-control" name="marca">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Precio</label>
+                <input type="number" class="form-control" name="precio">
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+    </div>
+
+<%- include('plantillas/footer'); -%>
+

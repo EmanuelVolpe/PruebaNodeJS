@@ -6,15 +6,24 @@ function getProducto(req, res){
     let idProducto = req.params.idProducto
     Producto.findById(idProducto, (error, producto) => {
         if(error) return res.status(500).send({message:`Error al obtnener el producto con el id ${idProducto}`})
-        res.status(200).send({producto: producto})
+        //res.status(200).send({producto: producto})
+        console.log({producto: producto});
+        res.render('productos', {
+            productoRender:producto,
+            titulo:'Agregar un Producto'
+        })
     })
 }
 
 function getProductos(req, res){
     Producto.find({}, (error, producto) => {
         if(error) return res.status(500).send({message:`Error ${error} al realizar la peticion`})
-        res.status(200).send({producto: producto})
+        //res.status(200).send({producto: producto})
         console.log({producto: producto});
+        res.render('productos', {
+            productoRender:producto,
+            titulo:'Agregar un Producto'
+        })
     })
 }
 
@@ -43,6 +52,8 @@ function agregarProducto(req, res){
                             })
         console.log({producto: producto});
     })
+    const body = req.body;
+    console.log(body);
 }
 
 function borrarProducto(req, res){
